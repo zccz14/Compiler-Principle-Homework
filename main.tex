@@ -915,6 +915,26 @@
         \caption{0*(10+)* 对应的 DFA}
         \label{fig:4}
     \end{figure}
+    
+    合并 \{0, 2\} 
+    
+	\begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,semithick]
+            
+            \node[state, initial, accepting] (0) {0};
+            \node[state] (1) [right of = 0] {1};
+            
+            \path
+            (0) edge [bend left] node {1} (1)
+                edge [loop above] node {0} (0)
+            (1) edge [bend left] node {0} (0)
+            ;
+        \end{tikzpicture}
+        \caption{0*(10+)* 对应的最简 DFA}
+        \label{fig:4_1}
+    \end{figure}
+    
 	
 \end{enumerate}
 
