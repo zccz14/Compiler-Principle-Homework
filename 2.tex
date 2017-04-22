@@ -1,0 +1,78 @@
+\begin{enumerate}
+    \item 考虑下述文法 $G_1$：
+    
+    \begin{align*}
+        S & \to a | \wedge | (T) \\
+        T & \to T,S | S
+    \end{align*}
+    
+    \begin{enumerate}
+        \item 消去 $G_1$ 的左递归。\sout{然后，对每个非终结符，写出不带回溯的递归子程序。}
+        \item 经改写后的文法是否是 LL(1) 的？给出它的预测分析表。
+        
+    \end{enumerate}
+    
+    \item 对下列的文法 G：
+    
+    \begin{align*}
+        E & \to TE' \\
+        E' & \to +E | \epsilon \\
+        T & \to FT' \\
+        T' & \to T | \epsilon \\
+        F & \to PF' \\
+        F' & \to *F' | \epsilon \\
+        P & \to (E) | a | b | \wedge
+    \end{align*}
+    
+    \begin{enumerate}
+        \item 计算这个文法的每个非终结符的 FIRST 和 FOLLOW。
+        \item 证明这个文法是 LL(1) 的。
+        \item 构造它的预测分析表。
+        \item \sout{构造它的递归下降分析程序。}
+    \end{enumerate}
+    
+    \item 下面文法中，哪些是 LL(1) 的，说明理由。
+    
+    \begin{enumerate}
+        \item \begin{align*}
+            S & \to ABc \\
+            A & \to a | \epsilon \\
+            B & \to b | \epsilon
+        \end{align*}
+        
+        \item \begin{align*}
+            S & \to Ab \\
+            A & \to a | B | \epsilon \\
+            B & \to b | \epsilon
+        \end{align*}
+        
+        \item \begin{align*}
+            S & \to ABBA \\
+            A & \to a | \epsilon \\
+            B & \to b | \epsilon
+        \end{align*}
+        
+        \item \begin{align*}
+            S & \to aSe | B \\
+            B & \to bBe | C \\
+            C & \to cCe | d
+        \end{align*}
+        
+    \end{enumerate}
+    
+    \item 对下面文法：
+    
+    \begin{align*}
+        Expr & \to -Expr \\
+        Expr & \to (Expr) | Var\ ExprTail \\
+        ExprTail & \to -Expr | \epsilon \\
+        Var & \to id\ VarTail \\
+        VarTail & \to (Expr) | \epsilon
+    \end{align*}
+    
+    \begin{enumerate}
+        \item 构造 LL(1) 分析表。
+        \item \sout{给出对句子 id - - id((id)) 的分析过程。}
+    \end{enumerate}
+    
+\end{enumerate}
