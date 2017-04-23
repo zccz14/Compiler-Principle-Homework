@@ -17,7 +17,7 @@
         
         \begin{align*}
             T & \to ST' \\
-            T' & \to ,ST | \epsilon
+            T' & \to ,ST' | \epsilon
         \end{align*}
         
         于是得到不含左递归的文法 $G_2$：
@@ -25,7 +25,7 @@
         \begin{align*}
             S & \to a | \wedge | (T) \\
             T & \to ST' \\
-            T' & \to ,ST | \epsilon
+            T' & \to ,ST' | \epsilon
         \end{align*}
         
         \item 经改写后的文法是否是 LL(1) 的？给出它的预测分析表。
@@ -40,11 +40,11 @@
                 \hline
                 $V_N$ & FIRST & FOLLOW \\
                 \hline
-                S & \{a, $\wedge$, (\} & \{\#, \textbf{,}, a, $\wedge$, (\} \\
+                S & \{a, $\wedge$, (\} & \{\#, \textbf{,}, )\} \\
                 \hline
-                T & \{a, $\wedge$, (\} & \{\#, \textbf{,}, a, $\wedge$, (, )\} \\
+                T & \{a, $\wedge$, (\} & \{)\} \\
                 \hline
-                T' & \{\textbf{,}, $\epsilon$\} & \{\#, \textbf{,}, a, $\wedge$, (, )\} \\
+                T' & \{\textbf{,}, $\epsilon$\} & \{)\} \\
                 \hline
             \end{tabular}
             \caption{$G_2$ 文法的非终结符的 FIRST 集与 FOLLOW 集}
@@ -63,7 +63,7 @@
                 \hline
                 T & $T \to ST'$ & $T \to ST'$ & $T \to ST'$ & & & \\
                 \hline
-                T' & $T' \to \epsilon$ & $T' \to \epsilon$ & $T' \to \epsilon$ & $T' \to \epsilon$ & $T' \to ,ST$ & $T' \to \epsilon$\\
+                T' & & & & $T' \to \epsilon$ & $T' \to ,ST$ & \\
                 \hline
             \end{tabular}
             \caption{$G_2$ 文法的预测分析表}
@@ -204,9 +204,9 @@
                 \hline
                 S & \{a, $\epsilon$\} & \{\#\} \\
                 \hline
-                A & \{a, $\epsilon$\} & \{b\} \\
+                A & \{a, $\epsilon$\} & \{b, c\} \\
                 \hline
-                B & \{b, $\epsilon$\} & $\emptyset$ \\
+                B & \{b, $\epsilon$\} & \{c\} \\
                 \hline
             \end{tabular}
             \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
@@ -365,7 +365,7 @@
                     \hline
                     Expr & $Expr \to -Expr$ & $Expr \to Var \text{\textvisiblespace} ExprTail $ & & $Expr \to (Expr)$ & & \\
                     \hline
-                    ExprTail & $ExprTail \to -ExprTail$ & & & & $ExprTail \to \epsilon$ & $ExprTail \to \epsilon$ \\
+                    ExprTail & $ExprTail \to -Expr$ & & & & $ExprTail \to \epsilon$ & $ExprTail \to \epsilon$ \\
                     \hline
                     Var & & $Var \to id \text{\textvisiblespace} VarTail$ & & & & \\
                     \hline
