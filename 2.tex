@@ -60,7 +60,7 @@
                 $V_N$ & a & $\wedge$ & ( & ) & \textbf{,} & \# \\
                 \hline
                 S & $S \to a$ & $S \to \wedge$ & $S \to (T)$ & & & \\ 
-                \hline
+                \hline 
                 T & $T \to ST'$ & $T \to ST'$ & $T \to ST'$ & & & \\
                 \hline
                 T' & & & & $T' \to \epsilon$ & $T' \to ,ST$ & \\
@@ -202,7 +202,7 @@
                 \hline
                 $V_N$ & FIRST & FOLLOW \\
                 \hline
-                S & \{a, $\epsilon$\} & \{\#\} \\
+                S & \{a, b, c\} & \{\#\} \\
                 \hline
                 A & \{a, $\epsilon$\} & \{b, c\} \\
                 \hline
@@ -234,6 +234,23 @@
         
         \textbf{答：不是 LL(1) 文法。}
         
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                S & \{a, b\} & \{\#\} \\
+                \hline
+                A & \{a, b, $\epsilon$\} & \{b\} \\
+                \hline
+                B & \{b, $\epsilon$\} & \{b\} \\
+                \hline
+            \end{tabular}
+            \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
+            \label{tab:FF3_2}
+        \end{table}
+        
         在 A 得到 b 时不能确定使用 $A \to B$ 还是 $A \to \epsilon$；
         
         在 B 得到 b 时不能确定使用 $B \to b$ 还是 $B \to \epsilon$。
@@ -256,9 +273,9 @@
                 \hline
                 S & \{a, b, $\epsilon$\} & \{\#\} \\
                 \hline
-                A & \{a, $\epsilon$\} & \{\#, b\} \\
+                A & \{a, $\epsilon$\} & \{\#, a, b\} \\
                 \hline
-                B & \{b, $\epsilon$\} & \{\#, a\} \\
+                B & \{b, $\epsilon$\} & \{\#, a, b\} \\
                 \hline
             \end{tabular}
             \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
@@ -268,15 +285,15 @@
         \begin{enumerate}
             \item $A \to a | \epsilon$
             
-            $FIRST(a) \cap FOLLOW(A) = \emptyset$
+            $FIRST(a) \cap FOLLOW(A) = \{a\}$
             
             \item $B \to b | \epsilon$
             
-            $FIRST(b) \cap FOLLOW(B) = \emptyset$
+            $FIRST(b) \cap FOLLOW(B) = \{b\}$
             
         \end{enumerate}
         
-        所以，该文法是 LL(1) 的。
+        所以，该文法不是 LL(1) 的。
         
         \item \begin{align*}
             S & \to aSe | B \\
@@ -292,7 +309,7 @@
                 \hline
                 $V_N$ & FIRST & FOLLOW \\
                 \hline
-                S & \{a, b, c, d\} & \{\#\} \\
+                S & \{a, b, c, d\} & \{\#, e\} \\
                 \hline
                 B & \{b, c, d\} & \{\#, e\} \\
                 \hline
