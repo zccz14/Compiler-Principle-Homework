@@ -10,7 +10,67 @@
     
     \begin{enumerate}
         \item 消去 $G_1$ 的左递归。\sout{然后，对每个非终结符，写出不带回溯的递归子程序。}
+        
+        \textbf{答：}
+        
+        引入一个新的非终结符 $T'$：
+        
+        \begin{align*}
+            T & \to ST' \\
+            T' & \to ,ST | \epsilon
+        \end{align*}
+        
+        于是得到不含左递归的文法 $G_2$：
+        
+        \begin{align*}
+            S & \to a | \wedge | (T) \\
+            T & \to ST' \\
+            T' & \to ,ST | \epsilon
+        \end{align*}
+        
         \item 经改写后的文法是否是 LL(1) 的？给出它的预测分析表。
+        
+        \textbf{答：}
+        
+        首先算出文法 $G_2$ 的非终结符的 FIRST 集与 FOLLOW 集：
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                S & \{a, $\wedge$, (\} & \{\#, \textbf{,}, a, $\wedge$, (\} \\
+                \hline
+                T & \{a, $\wedge$, (\} & \{\#, \textbf{,}, a, $\wedge$, (, )\} \\
+                \hline
+                T' & \{\textbf{,}, $\epsilon$\} & \{\#, \textbf{,}, a, $\wedge$, (, )\} \\
+                \hline
+            \end{tabular}
+            \caption{$G_2$ 文法的非终结符的 FIRST 集与 FOLLOW 集}
+            \label{tab:FF1}
+        \end{table}
+        
+        然后据此构造预测分析表：
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|c|c|c|c|}
+                \hline
+                $V_N$ & a & $\wedge$ & ( & ) & \textbf{,} & \# \\
+                \hline
+                S & $S \to a$ & $S \to \wedge$ & $S \to (T)$ & & & \\ 
+                \hline
+                T & $T \to ST'$ & $T \to ST'$ & $T \to ST'$ & & & \\
+                \hline
+                T' & $T' \to \epsilon$ & $T' \to \epsilon$ & $T' \to \epsilon$ & $T' \to \epsilon$ & $T' \to ,ST$ & $T' \to \epsilon$\\
+                \hline
+            \end{tabular}
+            \caption{$G_2$ 文法的预测分析表}
+            \label{tab:PA1}
+        \end{table}
+        
+        根据表 \ref{tab:PA1} 得 $G_2$ 是 LL(1) 文法。
         
     \end{enumerate}
     
@@ -28,8 +88,100 @@
     
     \begin{enumerate}
         \item 计算这个文法的每个非终结符的 FIRST 和 FOLLOW。
+        
+        \textbf{答：}
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                E & \{(, a, b, $\wedge$\} & \{\#, )\} \\
+                \hline
+                E' & \{+, $\epsilon$\}  & \{\#, )\} \\
+                \hline
+                T & \{(, a, b, $\wedge$\} & \{\#, ), +\} \\
+                \hline
+                T' & \{(, a, b, $\wedge$, $\epsilon$\} & \{\#, ), +\} \\
+                \hline
+                F & \{(, a, b, $\wedge$\} & \{\#, ), +, (, a, b, $\wedge$\} \\
+                \hline
+                F' & \{*, $\epsilon$\}  & \{\#, ), +, (, a, b, $\wedge$\} \\
+                \hline
+                P & \{(, a, b, $\wedge$\} & \{\#, ), +, (, a, b, $\wedge$, *\} \\
+                \hline
+            \end{tabular}
+            \caption{文法 G 的非终结符的 FIRST 和 FOLLOW 集}
+            \label{tab:FF2}
+        \end{table}
+        
         \item 证明这个文法是 LL(1) 的。
+        
+        \textbf{证：}
+        
+        文法 G 中，仅 E', T', F', P 具有多个候选式，分别讨论：
+        
+        \begin{enumerate}
+            \item $E' \to +E | \epsilon$
+            
+            $FIRST(+E) \cap FIRST(\epsilon) = \{+\} \cap \{\epsilon\} = \emptyset$
+            
+            $FIRST(+E) \cap FOLLOW(E') = \{+\} \cap \{\#, )\} = \emptyset$
+            
+            \item $T' \to T | \epsilon$
+            
+            $FIRST(T) \cap FIRST(\epsilon) = \{(, a, b, \wedge\} \cap \{\epsilon\} = \emptyset$
+            
+            $FIRST(T) \cap FOLLOW(T') = \{(, a, b, \wedge\} \cap \{\#, ), +\} = \emptyset$
+            
+            \item $F' \to *F' | \epsilon$
+            
+            $FIRST(*F') \cap FIRST(\epsilon) = \{*\} \cap \{\epsilon\} = \emptyset$
+            
+            $FIRST(*F') \cap FOLLOW(F') = \{*\} \cap \{\#, ), +, (, a, b, \wedge\} = \emptyset$
+            
+            \item $P \to (E) | a | b | \wedge$
+            
+            $FIRST((E)) \cap (FIRST(a) \cup FIRST(b) \cup FIRST(\wedge)) = \emptyset$
+            
+            $FIRST(a) \cap (FIRST(b) \cup FIRST(\wedge)) = \emptyset$
+            
+            $FIRST(b) \cap FIRST(\wedge) = \emptyset$
+            
+            因此，$FIRST((E)), FIRST(a), FIRST(b), FIRST(\wedge)$ 两两不相交。
+            
+        \end{enumerate}
+        
+        综上所述，G 是 LL(1) 文法，\textbf{证毕。}
+        
         \item 构造它的预测分析表。
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+                \hline
+                $V_N$ & a & b & + & * & $\wedge$ & ( & ) & \# \\
+                \hline
+                E & $E \to TE'$ & $E \to TE'$ & & & $E \to TE'$ & $E \to TE'$ & & \\
+                \hline
+                E' & & & $E' \to +E$ & & & & $E' \to \epsilon$ & $E' \to \epsilon$ \\
+                \hline
+                T & $T \to FT'$ & $T \to FT'$ & & & $T \to FT'$ & $T \to FT'$ & & \\
+                \hline
+                T' & $T' \to T$ & $T' \to T$ & $T \to \epsilon$ & & $T' \to T$ & $T' \to T$ & $T \to \epsilon$ & $T \to \epsilon$ \\
+                \hline
+                F & $F \to PF'$ & $F \to PF'$ & & & $F \to PF'$ & $F \to PF'$ & & \\
+                \hline
+                F' & $F' \to \epsilon$ & $F' \to \epsilon$ & $F' \to \epsilon$ & $F' \to *F'$ & $F' \to \epsilon$ & $F' \to \epsilon$ & $F' \to \epsilon$ & $F' \to \epsilon$ \\
+                \hline
+                P & $P \to a$ & $P \to b$ & & & $P \to \wedge$ & $P \to (E)$ & & \\
+                \hline
+            \end{tabular}
+            \caption{文法 G 的预测分析表}
+            \label{tab:PA2}
+        \end{table}
+        
         \item \sout{构造它的递归下降分析程序。}
     \end{enumerate}
     
@@ -42,11 +194,51 @@
             B & \to b | \epsilon
         \end{align*}
         
+        \textbf{答：是 LL(1) 文法。}
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                S & \{a, $\epsilon$\} & \{\#\} \\
+                \hline
+                A & \{a, $\epsilon$\} & \{b\} \\
+                \hline
+                B & \{b, $\epsilon$\} & $\emptyset$ \\
+                \hline
+            \end{tabular}
+            \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
+            \label{tab:FF3_1}
+        \end{table}
+        
+        \begin{enumerate}
+            \item $A \to a | \epsilon$
+            
+            $FIRST(a) \cap FOLLOW(A) = \emptyset$
+            
+            \item $B \to b | \epsilon$
+            
+            $FIRST(b) \cap FOLLOW(B) = \emptyset$
+            
+        \end{enumerate}
+        
+        所以，该文法为 LL(1) 的。
+        
         \item \begin{align*}
             S & \to Ab \\
             A & \to a | B | \epsilon \\
             B & \to b | \epsilon
         \end{align*}
+        
+        \textbf{答：不是 LL(1) 文法。}
+        
+        在 A 得到 b 时不能确定使用 $A \to B$ 还是 $A \to \epsilon$；
+        
+        在 B 得到 b 时不能确定使用 $B \to b$ 还是 $B \to \epsilon$。
+        
+        （$FIRST(B) \cap FOLLOW(A) = \{b\}, FIRST(b) \cap FOLLOW(B) = \{b\} $）
         
         \item \begin{align*}
             S & \to ABBA \\
@@ -54,11 +246,79 @@
             B & \to b | \epsilon
         \end{align*}
         
+        \textbf{答：是 LL(1) 文法。}
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                S & \{a, b, $\epsilon$\} & \{\#\} \\
+                \hline
+                A & \{a, $\epsilon$\} & \{\#, b\} \\
+                \hline
+                B & \{b, $\epsilon$\} & \{\#, a\} \\
+                \hline
+            \end{tabular}
+            \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
+            \label{tab:FF3_3}
+        \end{table}
+        
+        \begin{enumerate}
+            \item $A \to a | \epsilon$
+            
+            $FIRST(a) \cap FOLLOW(A) = \emptyset$
+            
+            \item $B \to b | \epsilon$
+            
+            $FIRST(b) \cap FOLLOW(B) = \emptyset$
+            
+        \end{enumerate}
+        
+        所以，该文法是 LL(1) 的。
+        
         \item \begin{align*}
             S & \to aSe | B \\
             B & \to bBe | C \\
             C & \to cCe | d
         \end{align*}
+        
+        \textbf{答：是 LL(1) 文法。}
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                S & \{a, b, c, d\} & \{\#\} \\
+                \hline
+                B & \{b, c, d\} & \{\#, e\} \\
+                \hline
+                C & \{c, d\} & \{\#, e\} \\
+                \hline
+            \end{tabular}
+            \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
+            \label{tab:FF3_4}
+        \end{table}
+        
+        \begin{enumerate}
+            \item $S \to aSe | B$
+            
+            $FIRST(aSe) \cap FIRST(B) = \emptyset$
+            
+            \item $B \to bBe | C$
+            
+            $FIRST(bBe) \cap FIRST(C) = \emptyset$
+            
+            \item $C \to cCe | d$
+            
+            $FIRST(cCe) \cap FIRST(d) = \emptyset$
+            
+        \end{enumerate}
+        
+        所以，该文法是 LL(1) 的。
         
     \end{enumerate}
     
@@ -66,14 +326,57 @@
     
     \begin{align*}
         Expr & \to -Expr \\
-        Expr & \to (Expr) | Var\ ExprTail \\
+        Expr & \to (Expr) | Var \text{\textvisiblespace} ExprTail \\
         ExprTail & \to -Expr | \epsilon \\
-        Var & \to id\ VarTail \\
+        Var & \to id \text{\textvisiblespace} VarTail \\
         VarTail & \to (Expr) | \epsilon
     \end{align*}
     
     \begin{enumerate}
         \item 构造 LL(1) 分析表。
+        
+        \textbf{答：}
+                
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                \hline
+                $V_N$ & FIRST & FOLLOW \\
+                \hline
+                Expr & \{id, -, (\} & \{\#, )\} \\
+                \hline
+                ExprTail & \{-, $\epsilon$\} & \{\#, )\} \\
+                \hline
+                Var & \{id\} & \{\textvisiblespace\} \\
+                \hline
+                VarTail & \{(, $\epsilon$\} & \{\textvisiblespace\} \\
+                \hline
+            \end{tabular}
+            \caption{匿名文法的非终结符的 FIRST 和 FOLLOW 集}
+            \label{tab:FF4}
+        \end{table}
+        
+        \begin{table}[H]
+            \centering
+            \resizebox{\textwidth}{!}{
+                \begin{tabular}{|c|c|c|c|c|c|c|}
+                    \hline
+                    $V_N$ & - & id & \textvisiblespace & ( & ) & \# \\
+                    \hline
+                    Expr & $Expr \to -Expr$ & $Expr \to Var \text{\textvisiblespace} ExprTail $ & & $Expr \to (Expr)$ & & \\
+                    \hline
+                    ExprTail & $ExprTail \to -ExprTail$ & & & & $ExprTail \to \epsilon$ & $ExprTail \to \epsilon$ \\
+                    \hline
+                    Var & & $Var \to id \text{\textvisiblespace} VarTail$ & & & & \\
+                    \hline
+                    VarTail & & & $VarTail \to \epsilon$ & $VarTail \to (Expr)$ & & \\
+                    \hline
+                \end{tabular}
+            }
+            \caption{匿名文法的 LL(1) 预测分析表}
+            \label{tab:PA4}
+        \end{table}
+        
         \item \sout{给出对句子 id - - id((id)) 的分析过程。}
     \end{enumerate}
     
