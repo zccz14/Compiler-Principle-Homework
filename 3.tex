@@ -1,0 +1,67 @@
+\begin{enumerate}
+    \item[1.] 令文法 $G_1$ 为：
+    
+    \begin{align*}
+        E & \to E + T | T \\
+        T & \to T * F | F \\
+        F & \to (E) | i \\
+    \end{align*}
+    
+    证明 $ E + T * F $ 是它的一个句型，指出这个句型的所有短语，直接短语和句柄。
+    
+    \item[3.] 令文法\footnotemark $G_2$ 为：
+    
+    \footnotetext{此处文法 $G_2$ 来自于练习题 2，但练习题 2 不要求完成，因此改动了题目消除了对练习题 2 的依赖。}
+    
+    \begin{align*}
+        S & \to a | \wedge | (T) \\
+        T & \to T, S | S 
+    \end{align*}
+    
+    \begin{enumerate}
+        \item 计算文法 $G_2$ 的 FIRSTVT 和 LASTVT。
+        \item 计算 $G_2$ 的优先关系。$G_2$ 是一个算符优先文法吗？
+        \item 计算 $G_2$ 的优先函数。
+        \item \sout{给出输入串 (a, (a, a)) 的算符优先分析过程。}
+    \end{enumerate}
+    
+    \item[5.] 考虑文法
+    
+    \begin{align*}
+        S & \to AS | b \\
+        A & \to SA | a
+    \end{align*}
+    
+    \item 列出这个文法的所有 LR(0) 项目。
+    \item 构造这个文法的 LR(0) 项目集规范族及识别活前缀的 DFA。
+    \item 这个文法是 SLR 的吗？若是，构造出它的 SLR 分析表。
+    \item \sout{这个文法是 LALR 或 LR(1) 的吗？}
+    
+    \item[7.] 证明下面文法是 SLR(1) 但不是 LR(0) 的。
+    
+    \begin{align*}
+        S & \to A \\
+        A & \to Ab | bBa \\
+        B & \to aAc | a | aAb
+    \end{align*}
+    
+    \item[8.] 证明下面的文法
+    
+    \begin{align*}
+        S & \to AaAb | BbBa \\
+        A & \to \epsilon \\
+        B & \to \epsilon
+    \end{align*}
+    
+    是 LL(1) 的但不是 SLR(1) 的。
+    
+    \item[9.] 证明下面文法：
+    
+    \begin{align*}
+        S & \to Aa | bAc | Bc | bBa \\
+        A & \to d
+    \end{align*}
+    
+    \sout{是 LALR(1) 但}不是 SLR(1) 的。
+    
+\end{enumerate}
