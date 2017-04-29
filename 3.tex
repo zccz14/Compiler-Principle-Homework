@@ -379,24 +379,39 @@
             \begin{array}{cl}
                 I_0 = & \{S' \to \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a \} \\
                 \hline
-                I_1 = & GO(I_0, S) = \{S' \to S \cdot, A \to S \cdot A, A \to \cdot SA, A \to \cdot a\} \\
-                I_2 = & GO(I_0, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b \} \\
+                I_1 = & GO(I_0, S) = \{S' \to S \cdot, A \to S \cdot A, A \to \cdot SA, A \to \cdot a, S \to \cdot AS, S \to \cdot b\} \\
+                I_2 = & GO(I_0, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a \} \\
                 I_3 = & GO(I_0, b) = \{S \to b \cdot \} \\
                 I_4 = & GO(I_0, a) = \{A \to a \cdot \} \\
                 \hline
-                I_5 = & GO(I_1, A) = \{A \to SA \cdot \} \\
-                I_6 = & GO(I_1, S) = \{A \to S \cdot A\} \\
+                I_5 = & GO(I_1, A) = \{A \to SA \cdot, S \to A \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a \} \\
+                I_6 = & GO(I_1, S) = \{A \to S \cdot A, A \to \cdot SA, A \to \cdot a, S \to \cdot AS, S \to \cdot b\} \\
                     & GO(I_1, a) = \{A \to a \cdot \} = I_4 \\
+                    & GO(I_1, b) = \{S \to b \cdot\} = I_3 \\
                 \hline
-                I_7 = & GO(I_2, S) = \{S \to AS \cdot \} \\
-                    & GO(I_2, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b \} = I_2 \\
+                I_7 = & GO(I_2, S) = \{S \to AS \cdot, A \to S \cdot A, A \to \cdot SA, A \to \cdot a, S \to \cdot AS, S \to \cdot b \} \\
+                    & GO(I_2, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a \} = I_2 \\
                     & GO(I_2, b) = \{S \to b \cdot \} = I_3 \\
+                    & GO(I_2, a) = \{S \to a \cdot \} = I_4 \\
                 \hline
-                    & GO(I_6, A) = \{A \to SA \cdot \} = I_5 \\
+                    & GO(I_5, S) = \{S \to AS \cdot, A \to S \cdot A, A \to \cdot SA, A \to \cdot a, S \to \cdot AS, S \to \cdot b\} = I_7 \\
+                    & GO(I_5, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a\} = I_2 \\
+                    & GO(I_5, b) = \{S \to b \cdot\} = I_3 \\
+                    & GO(I_5, a) = \{A \to a \cdot\} = I_4 \\
+                \hline
+                    & GO(I_6, A) = \{A \to SA \cdot, S \to A \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a \} = I_5 \\
+                    & GO(I_6, S) = \{A \to S \cdot A, A \to \cdot SA, A \to \cdot a, S \to \cdot AS, S \to \cdot b \} = I_6 \\
+                    & GO(I_6, a) = \{A \to a \cdot\} = I_4 \\
+                    & GO(I_6, b) = \{S \to b \cdot\} = I_3 \\
+                \hline
+                    & GO(I_7, A) = \{A \to SA \cdot, S \to A \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a\} = I_5 \\
+                    & GO(I_7, S) = \{A \to S \cdot A, A \to \cdot SA, A \to \cdot a, S \to \cdot AS, S \to \cdot b\} = I_6 \\
+                    & GO(I_7, a) = \{A \to a \cdot\} = I_4 \\
+                    & GO(I_7, b) = \{S \to b \cdot\} = I_3 \\
             \end{array}
         \end{equation*}
         
-        LR(0) 项目集规范族为 $\{I_i | i = 0, 1, \dots 8\}$
+        LR(0) 项目集规范族为 $\{I_i | i = 0, 1, \dots 7\}$
         
         构造 DFA：
         
@@ -405,50 +420,53 @@
             \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
                                 semithick]
                 \node[initial, state] (0) {0};
-                \node[state] (1) [right of = 0] {1};
-                \node[state] (2) [below of = 1] {2};
-                \node[state] (3) [below of = 2] {3};
-                \node[state] (4) [below of = 3] {4};
-                \node[state] (5) [right of = 1] {5};
-                \node[state] (6) [below of = 5] {6};
-                \node[state] (7) [below of = 6] {7};
+                \node[state] (2) [right of = 0] {2};
+                \node[state] (5) [below left of = 2] {5};
+                \node[state] (6) [below right of = 5] {6};
+                \node[state] (7) [below right of = 2] {7};
+                \node[state] (1) [left of = 6] {1};
                 
                 \path
-                (0) edge node {S} (1)
+                (0) edge node [left] {S} (1)
                     edge node {A} (2)
-                    edge node {b} (3)
-                    edge node {a} (4)
                 (1) edge node {A} (5)
                     edge node {S} (6)
-                    edge [bend left] node {a} (4)
                 (2) edge [loop above] node {A} (2)
                     edge node {S} (7)
-                    edge node {b} (3)
+                (5) edge [bend left] node {S} (7)
+                    edge node {A} (2)
                 (6) edge node {A} (5)
+                    edge [loop below] node {S} (6)
+                (7) edge node {S} (6)
+                    edge [bend left] node {A} (5)
                 ;
             \end{tikzpicture}
-            \caption{识别活前缀的DFA}
+            \caption{识别活前缀的DFA \\ \textbf{注：图中所有节点(0, 1, 2, 5, 6, 7) 都有指向 3 的 b 边与指向 4 的 a 边，此处略去不画。}}
             \label{fig:DFA_5}
         \end{figure}
         
         \item 这个文法是 SLR 的吗？若是，构造出它的 SLR 分析表。
         
-        \textbf{答：是。}
+        \textbf{答：不是。}
+        
+        构造 LR(0) 分析表：
         
         \begin{equation*}
             \begin{array}{c|ccc|cc}
                 I & a & b & \# & S & A \\
                 \hline
                 0 & s_4 & s_3 & & 1 & 2 \\
-                1 & s_7 & & acc & 6 & 5 \\
-                2 & & s_3 & & 8 & 2 \\
+                1 & s_4 & s_3 & acc & 6 & 5 \\
+                2 & s_4 & s_3 & & 7 & 2 \\
                 3 & r_3 & r_3 & r_3 & & \\
                 4 & r_5 & r_5 & r_5 & & \\
-                5 & r_4 & r_4 & r_4 & & \\
-                6 & & & & & 5 \\
-                7 & r_2 & r_2 & r_2 & & \\
+                5 & r_4, s_4 & r_4, s_3 & r_4 & 7 & 2 \\
+                6 & s_4 & s_3 & & 6 & 5 \\
+                7 & r_2, s_4 & r_2, s_3 & r_2 & 6 & 5\\
             \end{array}
         \end{equation*}
+        
+        有冲突，因为 $FOLLOW(S) \cap FOLLOW(A) = \{a, b\}$，SLR 法不能解决冲突，因此\textbf{此文法不是 SLR 的}。
         
         \item \sout{这个文法是 LALR 或 LR(1) 的吗？}
     \end{enumerate}
