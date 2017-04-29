@@ -9,6 +9,23 @@
     
     证明 $ E + T * F $ 是它的一个句型，指出这个句型的所有短语，直接短语和句柄。
     
+    \textbf{答：}
+    
+    从起始符号 E 开始推导：
+    
+    \begin{align*}
+        E & \Rightarrow E + T \\
+          & \Rightarrow E + T * F
+    \end{align*}
+    
+    因此 $E + T * F$ 是文法 $G_1$ 的一个句型，\textbf{证毕}。
+    
+    短语：$E + T * F$, $T * F$
+    
+    直接短语：$T * F$
+    
+    句柄：$T * F$
+    
     \item[3.] 令文法\footnotemark $G_2$ 为：
     
     \footnotetext{此处文法 $G_2$ 来自于练习题 2，但练习题 2 不要求完成，因此改动了题目消除了对练习题 2 的依赖。}
@@ -20,8 +37,301 @@
     
     \begin{enumerate}
         \item 计算文法 $G_2$ 的 FIRSTVT 和 LASTVT。
+        
+        \textbf{答：}
+        
+        $$
+            S \to a \Rightarrow \left\{
+                \begin{array}{rl}
+                    a & \in FIRSTVT(S) \\
+                    a & \in LASTVT(S) 
+                \end{array}
+            \right.
+        $$
+        
+        $$
+            S \to \wedge \Rightarrow \left\{
+                \begin{array}{rl}
+                    \wedge & \in FIRSTVT(S)  \\
+                    \wedge & \in LASTVT(S)
+                \end{array}
+            \right.
+        $$
+        
+        $$
+            S \to (T) \Rightarrow \left\{
+                \begin{array}{rl}
+                    ( & \in FIRSTVT(S) \\
+                    ) & \in LASTVT(S)
+                \end{array}
+            \right.
+        $$
+        
+        $$
+            T \to T, S \Rightarrow \left\{
+                \begin{array}{rl}
+                    FIRSTVT(T) & \subseteq FIRSTVT(T) \\
+                    LASTVT(S) & \subseteq LASTVT(T) \\
+                    , & \in FIRSTVT(T) \\
+                    , & \in LASTVT(T)
+                \end{array}
+            \right.
+        $$
+        
+        $$
+            T \to S \Rightarrow \left\{
+                \begin{array}{rl}
+                    FIRSTVT(S) & \subseteq FIRSTVT(T) \\
+                    LASTVT(S) & \subseteq LASTVT(T) 
+                \end{array}
+            \right.
+        $$
+        
+        综上关系解得：
+        
+        \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|}
+                $V_N$ & FIRSTVT & LASTVT \\
+                S & \{a, $\wedge, ($\} & \{a, $\wedge$, )\} \\
+                T & \{a, $\wedge, (, \textbf{,}$\} & \{a, $\wedge$, ), \textbf{,}\} 
+            \end{tabular}
+            \caption{文法 $G_1$ 的 FIRSTVT 和 LASTVT}
+            \label{tab:FLVT_1}
+        \end{table}
+        
+        
         \item 计算 $G_2$ 的优先关系。$G_2$ 是一个算符优先文法吗？
+        
+        \textbf{答：}
+        
+        \begin{enumerate}
+            \item \textbf{对于 $G_2$ 的任意产生式的右部不含两个相继的非终结符，因此 $G_2$ 是算符文法；}
+            
+            \item \textbf{$G_2$ 不含 $\epsilon$ 产生式；}
+            
+            \item 优先级关系：
+            
+            $$
+                S \to (T) \Rightarrow \left\{
+                    \begin{array}{rll}
+                        ( & \lessdot t & , \forall t \in FIRSTVT(T) \\
+                        t & \gtrdot ) & , \forall t \in LASTVT(T) \\
+                        ( & \eqcirc )
+                    \end{array}
+                \right.
+            $$
+            
+            $$
+                T \to T, S \Rightarrow \left\{
+                    \begin{array}{rll}
+                        t & \gtrdot , & , \forall t \in LASTVT(T) \\
+                        , & \lessdot t & , \forall t \in FIRSTVT(S)
+                    \end{array}
+                \right.
+            $$
+            
+            对于 $\#S\#$ 有：
+            
+            $$
+                \left\{
+                    \begin{array}{rll}
+                        \# & \lessdot t & , \forall t \in FIRSTVT(T) \\
+                        t & \gtrdot \# & , \forall t \in LASTVT(T) \\
+                        \# & \eqcirc \# 
+                    \end{array}
+                \right.
+            $$
+            
+            综上关系得到优先关系表：
+            
+            \begin{table}[H]
+                \centering
+                \begin{equation*}
+                    \begin{array}{c|cccccc}
+                          & a & \wedge & ( & ) & , & \# \\
+                        \hline
+                        a & & & & \gtrdot & \gtrdot & \gtrdot \\
+                        \wedge & & & & \gtrdot & \gtrdot & \gtrdot \\
+                        ( & \lessdot & \lessdot & \lessdot & \eqcirc & \lessdot & \\
+                        ) & & & & \gtrdot & \gtrdot & \gtrdot \\
+                        , & \lessdot & \lessdot & \lessdot & \gtrdot & \gtrdot & \\
+                        \# & \lessdot & \lessdot & \lessdot & & & \eqcirc 
+                    \end{array}
+                \end{equation*}
+                \caption{文法 $G_2$ 的优先关系表}
+                \label{tab:PT_3}
+            \end{table}
+            
+        
+            \textbf{没有任何优先级冲突。}
+            
+        \end{enumerate}
+        
+        综上所述，文法 $G_2$ 是算符优先文法。
+        
         \item 计算 $G_2$ 的优先函数。
+        
+        \textbf{答：}
+        
+        \textbf{等价地给出一种基于优先关系表的算法，避免使用箭线图。}
+        
+        首先将算符优先文法的优先关系表 $T$ 定义为：$T: (V_T \cup \{\#\})^2 \mapsto \{\{\lessdot\}, \{\gtrdot\}, \{\eqcirc\}, \emptyset \} $。
+        
+        步骤分为两个阶段：\textbf{等价类划分}与\textbf{拓扑排序}。先根据 $\eqcirc$ 关系对元素进行等价类划分；然后将 $T$ 看成一个二分图的邻接矩阵的形式，进行拓扑排序，标记节点的拓扑序号。
+        
+        \begin{enumerate}
+            \item 初始化关系表 $T := T$，计数器 $cnt := 1$
+            
+            \item 列出元素集 $\{f_a, g_a | a \in V_T \cup \{\#\}\}$
+
+            \item 根据 $\eqcirc$ 关系划分等价类。
+
+            \item 对于每个等价类，检查其中的元素，是否\textbf{全部}满足以下条件：
+            
+            \begin{enumerate}
+                \item 若是行元素（有 f 标志）
+                
+                $T'$ 中对应的行中不存在 $\gtrdot$
+                
+                \item 若是列元素（有 g 标志）
+                
+                $T'$ 中对应的列中不存在 $\lessdot$
+                
+            \end{enumerate}
+
+            如果是，将该等价类标记为当前计数器的值，并在 $T'$ 中过滤该等价类有关的行与列，得到余表 $remain(T')$。
+            
+            \item 若 $T' = remain(T')$，意味着 $T$ 中存在环，即不存在优先函数，算法结束。
+            
+            \item 更新表 $T' := remain(T')$。
+            
+            \item 若 $T'$ \textbf{作为图的意义下}非空，则计数器自增 1 ，跳到步骤 4。
+            
+            \item 否则清算每个等价类中的元素的优先级，元素的优先级等于其所在的等价类被标记的值。
+            
+            \item 算法结束。
+
+        \end{enumerate}
+        
+        对于文法 $G_2$，参考表 \ref{tab:PT_3} 运行算法：
+        
+        \begin{enumerate}
+            \item 初始化 $T' := T$ ，计数器 $cnt := 1$。
+            
+            \item 根据表 \ref{tab:PT_3}，先得到元素集为 $\{f_a, f_\wedge, f_(, f_), f_,, f_\#, g_a, g_\wedge, g_(, g_), g_,, g_\#\}$。
+            
+            \item 根据 $\eqcirc$ 关系划分等价类：$\{f_a\}, \{f_\wedge\}, \{f_)\}, \{f_,\}, \{g_a\}, \{g_\wedge\}, \{g_(\}, \{g_,\}, \{f_(, g_)\}, \{f_\#, g_\#\}$。
+            
+            \item $\{f_\#, g_\#\}, \{f_(, g_)\}$ 符合要求，标记为 1，并划去对应的行与列得到余表：
+
+            \begin{equation*}
+                \begin{array}{c|cccc}
+                      & a & \wedge & ( & , \\
+                    \hline
+                    a & & &  & \gtrdot \\
+                    \wedge & & & & \gtrdot \\
+                    ) & & & & \gtrdot \\
+                    , & \lessdot & \lessdot & \lessdot & \gtrdot \\
+                \end{array}
+            \end{equation*}
+            
+            \item 一轮拓扑排序结束，$T'$ 非空，计数器增加到 2。
+            
+            \item $\{g_,\}$ 符合条件，标记为 2，并划去对应的行列得到余表：
+            
+            \begin{equation*}
+                \begin{array}{c|ccc}
+                      & a & \wedge & ( \\
+                    \hline
+                    a & & & \\
+                    \wedge & & & \\
+                    ) & & & \\
+                    , & \lessdot & \lessdot & \lessdot \\
+                \end{array}
+            \end{equation*}
+            
+            \item $T'$ 非空，计数器增加到 3。
+            
+            \item $\{f_a\}, \{f_\wedge\}, \{f_)\}, \{f_,\}$ 符合要求，标记为 3，求余表：
+            
+            \begin{equation*}
+                \begin{array}{c|ccc}
+                      & a & \wedge & ( \\
+                    \hline
+                \end{array}
+            \end{equation*}
+            
+            \item 表非空，计数器增加到 4。
+            
+            \item $\{g_a\}, \{g_\wedge\}, \{g_(\}$ 符合要求，标记为 4，求余表为空。
+            
+            \item 得到的优先函数表如下：
+            
+            \begin{table}[H]
+                \centering
+                \begin{equation*}
+                    \begin{array}{c|cc}
+                         & f & g \\
+                         \hline
+                         a & 3 & 4 \\
+                         \wedge & 3 & 4 \\
+                         ( & 1 & 4 \\
+                         ) & 3 & 1 \\
+                         , & 3 & 2 \\
+                         \# & 1 & 1
+                    \end{array}
+                \end{equation*}
+                \caption{文法 $G_2$ 的优先函数表}
+                \label{tab:PF_3_1}
+            \end{table}
+            
+            \item 算法结束。
+            
+        \end{enumerate}
+        
+        对比箭线图计数算法的结果：
+        
+        \begin{table}[H]
+            \centering
+            \begin{equation*}
+                \begin{array}{c|cc}
+                     & f & g \\
+                     \hline
+                     a & 3 & 4 \\
+                     \wedge & 3 & 4 \\
+                     ( & 1 & 4 \\
+                     ) & 3 & 1 \\
+                     , & 3 & 2 \\
+                     \# & 1 & 1
+                \end{array}
+            \end{equation*}
+            \caption{文法 $G_2$ 的优先函数表（通过箭线图计可达组数）}
+            \label{tab:PF_3_2}
+        \end{table}
+
+        \begin{table}[H]
+            \centering
+            \begin{equation*}
+                \begin{array}{c|cc}
+                     & f & g \\
+                     \hline
+                     a & 5 & 6 \\
+                     \wedge & 5 & 6 \\
+                     ( & 2 & 6 \\
+                     ) & 5 & 2 \\
+                     , & 5 & 3 \\
+                     \# & 2 & 2
+                \end{array}
+            \end{equation*}
+            \caption{文法 $G_2$ 的优先函数表（通过箭线图计可达点数）}
+            \label{tab:PF_3_3}
+        \end{table}
+        
+        \textbf{优先函数的等价性}：如果对于两种优先函数$F_{p1}, F_{p2}$，能找到一个单调增函数$F$，对于任意优先函数定义域内的元素 $x$ 使得 $F(F_{p1}(x)) = F_{p2}(x)$ 成立，则表示 $F_{p1}, F_{p2}$ 等价。
+        
+        对比表 \ref{tab:PF_3_1}，\ref{tab:PF_3_2}，\ref{tab:PF_3_3} 容易找到对应的单增函数表明这三者是等价的。
+        
         \item \sout{给出输入串 (a, (a, a)) 的算符优先分析过程。}
     \end{enumerate}
     
@@ -32,10 +342,116 @@
         A & \to SA | a
     \end{align*}
     
-    \item 列出这个文法的所有 LR(0) 项目。
-    \item 构造这个文法的 LR(0) 项目集规范族及识别活前缀的 DFA。
-    \item 这个文法是 SLR 的吗？若是，构造出它的 SLR 分析表。
-    \item \sout{这个文法是 LALR 或 LR(1) 的吗？}
+    \begin{enumerate}
+            
+        \item 列出这个文法的所有 LR(0) 项目。
+        
+        \textbf{答：}
+        
+        \begin{enumerate}[(1)]
+            \item $S \to \cdot AS$
+            \item $S \to A \cdot S$
+            \item $S \to AS \cdot$
+            \item $S \to \cdot b$
+            \item $S \to b \cdot$
+            \item $A \to \cdot SA$
+            \item $A \to S \cdot A$
+            \item $A \to SA \cdot$
+            \item $A \to \cdot a$
+            \item $A \to a \cdot$
+        \end{enumerate}
+        
+        \item 构造这个文法的 LR(0) 项目集规范族及识别活前缀的 DFA。
+        
+        拓广文法：
+
+        \begin{enumerate}[(1)]
+            \item $S' \to S$
+            \item $S \to AS$
+            \item $S \to b$
+            \item $A \to SA$
+            \item $A \to a$
+        \end{enumerate}
+        
+        子集法构造 LR(0) 项目集规范族：
+        
+        \begin{equation*}
+            \begin{array}{cl}
+                I_0 = & \{S' \to \cdot S, S \to \cdot AS, S \to \cdot b, A \to \cdot SA, A \to \cdot a \} \\
+                \hline
+                I_1 = & GO(I_0, S) = \{S' \to S \cdot, A \to S \cdot A, A \to \cdot SA, A \to \cdot a\} \\
+                I_2 = & GO(I_0, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b \} \\
+                I_3 = & GO(I_0, b) = \{S \to b \cdot \} \\
+                I_4 = & GO(I_0, a) = \{A \to a \cdot \} \\
+                \hline
+                I_5 = & GO(I_1, A) = \{A \to SA \cdot \} \\
+                I_6 = & GO(I_1, S) = \{A \to S \cdot A\} \\
+                    & GO(I_1, a) = \{A \to a \cdot \} = I_4 \\
+                \hline
+                I_7 = & GO(I_2, S) = \{S \to AS \cdot \} \\
+                    & GO(I_2, A) = \{S \to A \cdot S, S \to \cdot AS, S \to \cdot b \} = I_2 \\
+                    & GO(I_2, b) = \{S \to b \cdot \} = I_3 \\
+                \hline
+                    & GO(I_6, A) = \{A \to SA \cdot \} = I_5 \\
+            \end{array}
+        \end{equation*}
+        
+        LR(0) 项目集规范族为 $\{I_i | i = 0, 1, \dots 8\}$
+        
+        构造 DFA：
+        
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                                semithick]
+                \node[initial, state] (0) {0};
+                \node[state] (1) [right of = 0] {1};
+                \node[state] (2) [below of = 1] {2};
+                \node[state] (3) [below of = 2] {3};
+                \node[state] (4) [below of = 3] {4};
+                \node[state] (5) [right of = 1] {5};
+                \node[state] (6) [below of = 5] {6};
+                \node[state] (7) [below of = 6] {7};
+                
+                \path
+                (0) edge node {S} (1)
+                    edge node {A} (2)
+                    edge node {b} (3)
+                    edge node {a} (4)
+                (1) edge node {A} (5)
+                    edge node {S} (6)
+                    edge [bend left] node {a} (4)
+                (2) edge [loop above] node {A} (2)
+                    edge node {S} (7)
+                    edge node {b} (3)
+                (6) edge node {A} (5)
+                ;
+            \end{tikzpicture}
+            \caption{识别活前缀的DFA}
+            \label{fig:DFA_5}
+        \end{figure}
+        
+        \item 这个文法是 SLR 的吗？若是，构造出它的 SLR 分析表。
+        
+        \textbf{答：是。}
+        
+        \begin{equation*}
+            \begin{array}{c|ccc|cc}
+                I & a & b & \# & S & A \\
+                \hline
+                0 & s_4 & s_3 & & 1 & 2 \\
+                1 & s_7 & & acc & 6 & 5 \\
+                2 & & s_3 & & 8 & 2 \\
+                3 & r_3 & r_3 & r_3 & & \\
+                4 & r_5 & r_5 & r_5 & & \\
+                5 & r_4 & r_4 & r_4 & & \\
+                6 & & & & & 5 \\
+                7 & r_2 & r_2 & r_2 & & \\
+            \end{array}
+        \end{equation*}
+        
+        \item \sout{这个文法是 LALR 或 LR(1) 的吗？}
+    \end{enumerate}
     
     \item[7.] 证明下面文法是 SLR(1) 但不是 LR(0) 的。
     
@@ -44,6 +460,113 @@
         A & \to Ab | bBa \\
         B & \to aAc | a | aAb
     \end{align*}
+    
+    \textbf{证：}
+    
+    文法的开始符号只有一个产生式所以不需要拓广文法。
+    
+    \begin{enumerate}[(1)]
+        \item $S \to A$
+        \item $A \to Ab$
+        \item $A \to bBa$
+        \item $B \to aAc$
+        \item $B \to a$
+        \item $B \to aAb$
+    \end{enumerate}
+    
+    LR(0) 项目集规范族：
+    
+    \begin{equation*}
+        \begin{array}{cl}
+            I_0 = & \{S \to \cdot A, A \to \cdot Ab, A \to \cdot bBa\} \\
+            \hline
+            I_1 = & GO(I_0, A) = \{S \to A \cdot, A \to A \cdot b \} \\
+            I_2 = & GO(I_0, b) = \{A \to b \cdot Ba, B \to \cdot aAc, B \to \cdot a, B \to \cdot aAb \}\\
+            \hline
+            I_3 = & GO(I_1, b) = \{A \to Ab \cdot\} \\
+            \hline
+            I_4 = & GO(I_2, B) = \{A \to bB \cdot a\} \\
+            I_5 = & GO(I_2, a) = \{B \to a \cdot Ac, B \to a \cdot, B \to a \cdot Ab, A \to \cdot Ab, A \to \cdot bBa\} \\
+            \hline
+            I_6 = & GO(I_4, a) = \{A \to bBa \cdot \} \\
+            \hline
+            I_7 = & GO(I_5, A) = \{B \to aA \cdot c, B \to aA \cdot b, A \to A \cdot b \} \\
+            I_8 = & GO(I_5, b) = \{A \to b \cdot Ba, B \to \cdot aAc, B \to \cdot a, B \to \cdot aAb \} \\
+            \hline
+            I_9 = & GO(I_7, c) = \{B \to aAc \cdot\} \\
+            I_{10} = & GO(I_7, b) = \{B \to aAb \cdot, A \to Ab \cdot\} \\
+            \hline
+                  & GO(I_8, B) = \{A \to bB \cdot a\} = I_4 \\
+                  & GO(I_8, a) = \{B \to a \cdot Ac, B \to a \cdot, B \to a \cdot Ab, A \to \cdot Ab, A \to \cdot bBa\} = I_5 \\
+            \hline
+        \end{array}
+    \end{equation*}
+    
+    构造 LR(0) 分析表：
+    
+    \begin{table}[H]
+        \centering
+        \begin{equation*}
+            \begin{array}{c|cccc|ccc}
+                I & a & b & c & \# & S & A & B \\
+                \hline
+                0 & & s_2 & & & & 1 & \\
+                1 & & s_3 & & acc & & & \\
+                2 & s_5 & & & & & & 4 \\
+                3 & r_2 & r_2 & r_2 & r_2 & & & \\
+                4 & s_6 & & & & & & \\
+                5 & r_5 & r_5, s_8 & r_5 & r_5 & & 7 & \\
+                6 & r_3 & r_3 & r_3 & r_3 & & & \\
+                7 & & s_{10} & s_9 & & & & \\
+                8 & s_5 & & & & & & 4 \\
+                9 & r_4 & r_4 & r_4 & r_4 & & & \\
+                10 & r_6, r_2 & r_6, r_2 & r_6, r_2 & r_6, r_2 & & & \\
+            \end{array}
+        \end{equation*}
+        \caption{具有冲突的分析表}
+        \label{tab:SLR_7_1}
+    \end{table}
+    
+    表中有许多冲突，这表明\textbf{该文法不是 LR(0) 的}。
+    
+    计算 FIRST 和 FOLLOW 集：
+    
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c|cc}
+            $V_N$ & FIRST & FOLLOW \\
+            \hline
+            S & \{b\} & \{\#\} \\
+            A & \{b\} & \{\#, b, c\} \\
+            B & \{a\} & \{a\} \\
+        \end{tabular}
+        \caption{文法的 FIRST 和 FOLLOW 集}
+        \label{tab:FF_7}
+    \end{table}
+    
+    对于表 \ref{tab:SLR_7_1} 中 $I_5, I_{10}$ 中的冲突，应用 SLR(1) 法解决冲突：
+    
+    \begin{equation*}
+        \begin{array}{c|cccc|ccc}
+            I & a & b & c & \# & S & A & B \\
+            \hline
+            0 & & s_2 & & & & 1 & \\
+            1 & & s_3 & & acc & & & \\
+            2 & s_5 & & & & & & 4 \\
+            3 & r_2 & r_2 & r_2 & r_2 & & & \\
+            4 & s_6 & & & & & & \\
+            5 & r_5 & s_8 & r_5 & r_5 & & 7 & \\
+            6 & r_3 & r_3 & r_3 & r_3 & & & \\
+            7 & & s_{10} & s_9 & & & & \\
+            8 & s_5 & & & & & & 4 \\
+            9 & r_4 & r_4 & r_4 & r_4 & & & \\
+            10 & r_6 & r_2 & r_2 & r_2 & & & \\
+        \end{array}
+    \end{equation*}
+    
+    解决了所有冲突，这表明\textbf{该文法是 SLR(1) 的}。
+    
+    综上所述，该文法是 SLR(1) 的但不是 LR(0) 的，\textbf{证毕}。
     
     \item[8.] 证明下面的文法
     
@@ -55,6 +578,88 @@
     
     是 LL(1) 的但不是 SLR(1) 的。
     
+    \textbf{证：}
+    
+    计算该文法的 FIRST 和 FOLLOW：
+    
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{c|cc}
+            $V_N$ & FIRST & FOLLOW \\
+            \hline
+            S & \{a, b\} & \{\#\} \\
+            A & \{$\epsilon$\} & \{a, b\} \\
+            B & \{$\epsilon$\} & \{a, b\} \\
+        \end{tabular}
+        \caption{文法的 FIRST 和 FOLLOW 集}
+        \label{tab:FF_8}
+    \end{table}
+    
+    对于 $S \to AaAb | BbBa $
+    
+    $ FIRST(AaAb) \cap FIRST(BbBa) = \{a\} \cap \{b\} = \emptyset $
+    
+    所以，\textbf{该文法是 LL(1) 的}。
+    
+    拓广文法：
+    
+    \begin{enumerate}[(1)]
+        \item $S' \to S$
+        \item $S \to AaAb$
+        \item $S \to BbBa$
+        \item $A \to \epsilon$
+        \item $B \to \epsilon$
+    \end{enumerate}
+    
+    LR(0) 项目集规范族：
+    
+    \begin{equation*}
+        \begin{array}{cl}
+            I_0 = & \{S' \to \cdot S, S \to \cdot AaAb, S \to \cdot BbBa, A \to \cdot, B \to \cdot \} \\
+            \hline
+            I_1 = & GO(I_0, S) = \{S' \to S \cdot \} \\
+            I_2 = & GO(I_0, A) = \{S \to A \cdot aAb \} \\
+            I_3 = & GO(I_0, B) = \{S \to B \cdot bBa \} \\
+            \hline
+            I_4 = & GO(I_2, a) = \{S \to Aa \cdot Ab, A \to \cdot\} \\
+            \hline
+            I_5 = & GO(I_3, b) = \{S \to Bb \cdot Ba, B \to \cdot\} \\
+            \hline
+            I_6 = & GO(I_4, A) = \{S \to AaA \cdot b\} \\
+            \hline
+            I_7 = & GO(I_5, B) = \{S \to BbB \cdot a\} \\
+            \hline
+            I_8 = & GO(I_6, b) = \{S \to AaAb \cdot\} \\
+            \hline
+            I_9 = & GO(I_7, a) = \{S \to BbBa \cdot\} \\
+        \end{array}
+    \end{equation*}
+    
+    构造 LR(0) 分析表：
+    
+    \begin{equation*}
+        \begin{array}{c|ccc|ccc}
+            I & a & b & \# & S & A & B \\
+            \hline
+            0 & r_4, r_5 & r_4, r_5 & r_4, r_5 & 1 & 2 & 3 \\
+            1 & & & acc & & & \\
+            2 & s_4 & & & & & \\
+            3 & s_5 & & & & & \\
+            4 & r_4 & r_4 & r_4 & & 6 & \\
+            5 & r_5 & r_5 & r_5 & & & 7 \\
+            6 & & s_8 & & & & \\
+            7 & s_9 & & & & & \\
+            8 & r_2 & r_2 & r_2 & & & \\
+            9 & r_3 & r_3 & r_3 & & & \\
+        \end{array}
+    \end{equation*}
+    
+    在状态 0 处有规约-规约冲突，这表明该文法不是 LR(0) 文法。
+    
+    检查表 \ref{tab:FF_8} 得 FOLLOW(A) = FOLLOW(B)，这使得 SLR 法无法解决冲突，因此\textbf{该文法不是 SLR(1) 文法}。
+    
+    综上所述，该文法是 LL(1) 的但不是 SLR(1) 的，\textbf{证毕}。
+    
     \item[9.] 证明下面文法：
     
     \begin{align*}
@@ -63,5 +668,46 @@
     \end{align*}
     
     \sout{是 LALR(1) 但}不是 SLR(1) 的。
+    
+    \textbf{答：缺少对非终结符 B 的定义，此题不可做。}
+    
+    % \textbf{证：}
+    
+    % 拓广文法：
+    
+    % \begin{enumerate}[(1)]
+    %     \item $S' \to S$
+    %     \item $S \to Aa$
+    %     \item $S \to bAc$
+    %     \item $S \to Bc$
+    %     \item $S \to bBa$
+    %     \item $A \to d$
+    % \end{enumerate}
+    
+    % LR(0) 项目集规范族：
+    
+    % \begin{equation*}
+    %     \begin{array}{cl}
+    %         I_0 = & \{S' \to \cdot S, S \to \cdot Aa, S \to \cdot bAc, S \to \cdot Bc, S \to \cdot bBa, A \to \cdot d\} \\
+    %         \hline
+    %         I_1 = & GO(I_0, S) = \{S' \to S \cdot\} \\ 
+    %         I_2 = & GO(I_0, A) = \{S \to A \cdot a\} \\ 
+    %         I_3 = & GO(I_0, b) = \{S \to b \cdot Ac, S \to b \cdot Ba, A \to \cdot d\} \\ 
+    %         I_4 = & GO(I_0, B) = \{S \to B \cdot c\} \\ 
+    %         I_5 = & GO(I_0, d) = \{A \to d \cdot\} \\ 
+    %         \hline
+    %         I_6 = & GO(I_2, a) = \{S \to Aa \cdot \} \\
+    %         \hline
+    %         I_7 = & GO(I_3, A) = \{S \to bA \cdot c\} \\
+    %         I_8 = & GO(I_3, B) = \{S \to bB \cdot a\} \\
+    %         I_9 = & GO(I_3, d) = \{A \to d \cdot\} \\
+    %         \hline
+    %         I_{10} = & GO(I_4, c) = \{S \to Bc \cdot\} \\
+    %         \hline
+    %         I_{11} = & GO(I_7, c) = \{S \to bAc \cdot\} \\
+    %         \hline
+    %         I_{12} = & GO(I_8, a) = \{S \to bBa \cdot\} \\
+    %     \end{array}
+    % \end{equation*}
     
 \end{enumerate}
