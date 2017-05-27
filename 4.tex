@@ -1,0 +1,33 @@
+\begin{enumerate}
+    \item[1.] 给出下面表达式的逆波兰表示（后缀式）：
+    
+    \begin{enumerate}
+        \item a * (-b + c)
+        \item not A or not (C or not D)
+        \item a + b * (c + d / e)
+        \item (A and B) or (not C or D)
+        \item -a + b * (-c + d)
+        \item (A or B) and (C or not D and E)
+        \item if (x + y) * z = 0 then (a + b) ↑ c else a ↑ b ↑ c
+    \end{enumerate}
+    
+    \item[3.] 请将表达式 -(a + b) * (c + d) - (a + b + c) 分别表示成三元式、间接三元式和四元式序列。
+    
+    \item[5.] 按上课所讲方式写出四元式序列：
+    
+    \begin{center}
+        A[i, j] := B[i, j] + C[A[k, l] + d[i + j]]
+    \end{center}
+    
+    其中，数组 A, B 的规模均为 20 × 40，数组 C, D 的长度均为 80。
+    
+    \item[6.] 按上课所讲方式，写出布尔式 A or (B and not (C or D)) 的四元式序列。
+    
+    \item[7.] 按上课所讲方式，把下面的语句翻译成四元式序列：
+    
+    \begin{lstlisting}
+    while A < C and B < D do
+        if A = 1 then C := C + 1 else
+            while A <= D do A := A + 2;
+    \end{lstlisting}
+\end{enumerate}
