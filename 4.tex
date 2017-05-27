@@ -11,7 +11,63 @@
         \item if (x + y) * z = 0 then (a + b) ↑ c else a ↑ b ↑ c
     \end{enumerate}
     
+    \textbf{答：}
+    
+    用 neg 表示一元运算符取负数 -，以便区分减法运算符。
+    
+    \begin{enumerate}
+        \item a b neg c + *
+        \item A not C D not or not or
+        \item a b c d e / + * +
+        \item A B and C not D or or
+        \item a neg b c neg d + * +
+        \item A B or C D not E and or and
+        \item x y + z * 0 = a b + c ↑ a b ↑ c ↑ ?
+    \end{enumerate}
+    
     \item[3.] 请将表达式 -(a + b) * (c + d) - (a + b + c) 分别表示成三元式、间接三元式和四元式序列。
+    
+    \textbf{答：}
+
+    用 neg 表示一元运算符取负数 -，以便区分减法运算符。
+    
+    \textbf{三元式}：
+        
+    \begin{tabular}{cccc}
+        (1) & + & a & b \\
+        (2) & neg & (1) & _ \\
+        (3) & + & c & d \\
+        (4) & * & (2) & (3) \\
+        (5) & + & a & b \\
+        (6) & + & (5) & c \\
+        (7) & - & (4) & (6)
+    \end{tabular}
+    
+    观察到上表中 (1) 与 (5) 是重复的，可以使用\textbf{间接三元式}来消除冗余三元式：
+    
+    间接码表（横排）：(1) (2) (3) (4) (1) (5) (6)
+    
+    间接三元式表：
+
+    \begin{tabular}{cccc}
+        (1) & + & a & b \\
+        (2) & neg & (1) & _ \\
+        (3) & + & c & d \\
+        (4) & * & (2) & (3) \\
+        (5) & + & (1) & c \\
+        (6) & - & (4) & (5)
+    \end{tabular}
+    
+    再改写成\textbf{四元式}：
+    
+    \begin{tabular}{ccccc}
+        (1) & + & a & b & T1 \\
+        (2) & neg & T1 & _ & T2 \\
+        (3) & + & c & d & T3 \\
+        (4) & * & T2 & T3 & T4 \\
+        (5) & + & T1 & c & T5 \\
+        (6) & - & T4 & T5 & T6 \\
+    \end{tabular}
     
     \item[5.] 按上课所讲方式写出四元式序列：
     
@@ -21,7 +77,66 @@
     
     其中，数组 A, B 的规模均为 20 × 40，数组 C, D 的长度均为 80。
     
+    \textbf{答：}
+    
+    \begin{tabular}{ccccc}
+        (1) & * & i & 40 & T1 \\
+        (2) & + & T1 & j & T2 \\
+        (3) & - & A & 41 & T3 \\
+
+        (4) & * & i & 40 & T4 \\
+        (5) & + & T4 & j & T5 \\
+        (6) & - & B & 41 & T6 \\
+        (7) & =[] & T6[T5] & _ & T7 \\
+
+        (8) & * & k & 40 & T8 \\
+        (9) & + & T8 & l & T9 \\
+        (10) & - & A & 41 & T10 \\
+        (11) & =[] & T10[T9] & _ & T11 \\
+
+        (12) & + & i & j & T12 \\
+        (13) & - & D & 1 & T13 \\
+        (14) & =[] & T13[T12] & _ & T14 \\
+        
+        (15) & + & T11 & T14 & T16 \\
+        (16) & - & C & 1 & T16 \\
+        (17) & =[] & T16[T15] & _ & T17 \\
+
+        (18) & + & T7 & T17 & T18 \\
+        (19) & []= & T18 & _ & T3[T2] \\
+    \end{tabular}
+    
     \item[6.] 按上课所讲方式，写出布尔式 A or (B and not (C or D)) 的四元式序列。
+    
+    \textbf{答：}
+    
+    上课所讲方式包含两种方式：
+    
+    \begin{enumerate}
+        \item 将布尔表达式当作表达式直接翻译
+
+        \begin{tabular}{ccccc}
+            (1) & or & C & D & T1 \\
+            (2) & not & T1 & _ & T2 \\
+            (3) & and & B & T2 & T3 \\
+            (4) & or & A & T3 & T4 \\
+        \end{tabular}
+        
+        \item 拉链返填短路优化布尔表达式
+        
+        \begin{tabular}{ccccc}
+            (1) & jnz & A & _ & 0\\
+            (2) & j & _ & _ & 3 \\
+            (3) & jnz & B & _ & 5 \\
+            (4) & j & _ & _ & 0 \\
+            (5) & jnz & C & _ & 4 \\
+            (6) & j & _ & _ & 7 \\
+            (7) & jnz & D & _ & 5\\
+            (8) & j & _ & _ & 1 \\
+        \end{tabular}
+        
+    \end{enumerate}
+    
     
     \item[7.] 按上课所讲方式，把下面的语句翻译成四元式序列：
     
@@ -30,4 +145,25 @@
         if A = 1 then C := C + 1 else
             while A <= D do A := A + 2;
     \end{lstlisting}
+    
+    \textbf{答：}
+    
+    \begin{tabular}{ccccc}
+        (1) & jlt & A & C & 3 \\
+        (2) & j & _ & _ & 0 \\
+        (3) & jlt & B & D & 5 \\
+        (4) & j & _ & _ & 2 \\
+        (5) & je & A & 1 & 7 \\
+        (6) & j & _ & _ & 10 \\
+        (7) & + & C & 1 & T1 \\
+        (8) & := & T1 & _ & C \\
+        (9) & j & _ & _ & 1 \\
+        (10) & jle & A & D & 12 \\
+        (11) & j & _ & _ & 1 \\
+        (12) & + & A & 2 & T2 \\
+        (13) & := & T2 & _ & A \\
+        (14) & j & _ & _ & 10 \\
+        (15) & j & _ & _ & 1 \\
+    \end{tabular}
+    
 \end{enumerate}
